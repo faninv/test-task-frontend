@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as Serializer;
+use \DateTime;
 
 /**
  * User.
@@ -253,8 +254,7 @@ class User
      */
     public function setUserBirthday($userBirthday)
     {
-        $this->userBirthday = $userBirthday;
-
+        $this->userBirthday = new DateTime($userBirthday);
         return $this;
     }
 
@@ -266,6 +266,15 @@ class User
     public function getUserBirthday()
     {
         return $this->userBirthday;
+    }
+
+    /**
+     * Get getUserBirthdayInputFormatted
+     *
+     *  @return string Birthday Formatted for input type date
+     */
+    public function getUserBirthdayInputFormatted(){
+        return $this->userBirthday->format('Y-m-d');
     }
 
     /**

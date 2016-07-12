@@ -2,12 +2,38 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        <title>{% block title %}Application{% endblock %}</title>
+
+        {% block stylesheets %}
+            {% stylesheets
+                filter="compass"
+                "assetic/bootstrap_css.scss"
+                "assets/scss/main.scss"
+            %}
+
+            <link rel="stylesheet" href="{{ asset_url }}" />
+            {% endstylesheets %}
+
+        {% endblock %}
+
+        {% javascripts
+            'assetic/jquery.js'
+            'assetic/bootstrap_modal.js'
+            'assetic/marionette.js'
+            'assetic/marionette_backbone.syphon_6.js'
+            'assets/js/app.js'
+        %}
+            <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        <div class="container">
+            <div class="content-wrapper">
+                {% block body %}{% endblock %}
+            </div>
+            {% block javascripts %}{% endblock %}
+        </div>
     </body>
 </html>

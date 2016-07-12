@@ -3,9 +3,8 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
@@ -27,18 +26,70 @@ class DefaultController extends Controller
     }
 
     /**
-     * Handles user form ajax submission
-     *
-     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     *
-     * @Route("/process-form", name="process.form", options={"expose"=true})
-     */
-    public function processFormAction()
+    * @Route("/user", name="user")
+    */
+    public function userAction()
     {
-        $this->initUser();
-        $handler = $this->get('frontend.form_handlers.user')->setModel($this->user);
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('AppBundle:User')
+            ->findOneBy(['id'=>1]);
 
-        return $handler->handle();
+        $responseObject =  (object) [
+            'userName' => $user->getUserName(),
+            'userBirthday' => $user->getUserBirthdayInputFormatted(),
+            'userEmail' => $user->getUserEmail(),
+            'siteUrl' => $user->getSiteUrl(),
+            'userPhone' => $user->getUserPhone(),
+            'userSkill' => $user->getUserSkill(),
+            'userGender' => $user->getUserGender(),
+            'userAbout' => $user->getUserAbout()
+        ];
+
+        $jsonContent = json_encode($responseObject);
+
+        $response = new Response(json_encode(array(
+            $jsonContent
+        )));
+
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
+
+    /**
+     * @Route("/update", name="update")
+     */
+    public function updateAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('AppBundle:User')
+            ->findOneBy(['id'=>1]);
+        $data = $_POST = json_decode(file_get_contents('php://input'), true);
+
+        if($data){
+            $user->setUserName($data['userName']);
+            $user->setUserBirthday($data['userBirthday']);
+            $user->setUserEmail($data['userEmail']);
+            $user->setSiteUrl($data['siteUrl']);
+            $user->setUserPhone($data['userPhone']);
+            $user->setUserSkill($data['userSkill']);
+            $user->setUserGender($data['userGender']);
+            $user->setUserAbout($data['userAbout']);
+            if(isset($data['userPwd']) && isset($data['userRpwd']) && $data['userPwd'] != null && $data['userRpwd'] != null
+            && !empty($data['userPwd']) && !empty($data['userRpwd']) && $data['userPwd'] === $data['userRpwd'])
+                $user->setPassword($data['userPwd']);
+
+            $em->persist($user);
+            $em->flush();
+        }
+
+        $response = new Response(json_encode(
+            'saved'
+        ));
+
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
     }
 
     /**

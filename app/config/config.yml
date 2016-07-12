@@ -78,7 +78,24 @@ assetic:
           apply_to: "\.scss$"
         coffee:
           apply_to: "\.coffee$"
-
+    assets:
+        bootstrap_css:
+            inputs:
+                - %kernel.root_dir%/../vendor/twbs/bootstrap-sass/assets/stylesheets/_bootstrap.scss
+        bootstrap_modal:
+            inputs:
+                - %kernel.root_dir%/../vendor/twbs/bootstrap-sass/assets/javascripts/bootstrap/modal.js
+        jquery:
+            inputs:
+                - %kernel.root_dir%/../vendor/components/jquery/jquery.min.js
+        marionette:
+            inputs:
+                - %kernel.root_dir%/../node_modules/backbone.marionette/node_modules/underscore/underscore-min.js
+                - %kernel.root_dir%/../node_modules/backbone.marionette/node_modules/backbone/backbone-min.js
+                - %kernel.root_dir%/../node_modules/backbone.marionette/node_modules/backbone.babysitter/lib/backbone.babysitter.min.js
+                - %kernel.root_dir%/../node_modules/backbone.marionette/node_modules/backbone.wreqr/lib/backbone.wreqr.min.js
+                - %kernel.root_dir%/../node_modules/backbone.marionette/lib/backbone.marionette.min.js
+                - %kernel.root_dir%/../node_modules/backbone.marionette/node_modules/backbone.syphon.js
 fos_rest:
     view:
         view_response_listener: true

@@ -1,6 +1,112 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <p>Url for ajax form submit: {{ path('process.form') }}</p>
-{% endblock %}
+    <div class="content-top-wrapper">
+        <div class="row">
+            <div class="col-md-10">
+                <div class="logo">Application form</div>
+            </div>
+            <div class="col-md-2">
+                <button type="button" id="loadModalForm" class="btn btn-white" data-toggle="modal" data-target="#myModal">Edit</button>
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content" id="edit-form-view">
+                            here be modal content
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <div id="app-container">
+        <div id="main-region" class="container">
+            <p>Here is static content in the web page. You'll notice that it
+                gets replaced by our app as soon as we start it.
+            </p>
+        </div>
+    </div>
+
+    <script type="text/template" id="user-template">
+        <div class="content-main-wrapper">
+            <div class="row">
+                <div class="col-sm-12 col-xs-12 col-md-3 col-lg-3">
+                    <div class="thumbnail top-bordered-thumb info-left">
+                        <div class="field-user-name"><%- userName %></div>
+                        <div class="field-user-birdthday"><%- userBirthdayFormatted %></div>
+                        <div class="field-user-email"><%- userEmail %></div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-xs-12 col-md-9 col-lg-9">
+                    <div class="thumbnail top-bordered-thumb info-right">
+                        <div class="row">
+                            <div class="col-sm-12 col-xs-12 col-md-4 col-lg-4">
+                                <div class="field-user-site-url"><%- siteUrl %></div>
+                                <div class="field-user-phone"><%- userPhone %></div>
+                                <div class="field-user-skill">Skill <%- userSkill %></div>
+                                <div class="field-user-gender"><%- userGender %></div>
+                            </div>
+                            <div class="col-sm-12 col-xs-12 col-md-8 col-lg-8">
+                                <div class="field-user-about"><%- userAbout %></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/template" id="edit-form">
+        <form>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="userName">User Name:</label>
+                    <input type="text" class="form-control" id="userName" name="userName" value="<%- userName %>">
+                </div>
+                <div class="form-group">
+                    <input type="date" class="form-control" id="userBirthday" name="userBirthday" placeholder="Birthdate" value="<%- userBirthday %>">
+                    <input type="hidden" id="userBirthdayFormatted" name="userBirthdayFormatted" value="<%- userBirthdayFormatted %>">
+                </div>
+                <div class="form-group">
+                    <input type="email" class="form-control" id="userEmail" name="userEmail" placeholder="Email" value="<%- userEmail %>">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="siteUrl" name="siteUrl" placeholder="Url" value="<%- siteUrl %>">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="userPhone" name="userPhone" placeholder="Phone number" value="<%- userPhone %>">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="userSkill" name="userSkill" placeholder="Skill number" value="<%- userSkill %>">
+                </div>
+                <div class="form-group">
+                    <div class="radio">
+                        <label><input type="radio" name="userGender" <% if (userGender == 'Male') { %>checked='checked'<% } %> value="Male">Male</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" name="userGender" <% if (userGender == 'Female') { %>checked='checked'<% } %> value="Female">Female</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" id="pwd" name="userPwd" placeholder="Password">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" id="rpwd" name="userRpwd" placeholder="Repeat Password">
+                </div>
+
+                <div class="form-group">
+                    <textarea class="form-control" id="userAbout" name="userAbout" placeholder="Enter a brief description of yourself and interest."><%- userAbout %></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary js-submit" id="formSubmit">Save changes</button>
+            </div>
+        </form>
+    </script>
+{% endblock %}
